@@ -52,18 +52,38 @@ def import_data_from_sheet(
             data[implicit["value"]] = "\t".join(map(str, data.values()))
         try:
             concept_entry = data.pop(concept_column[1])
+            if not concept_entry.strip():
+                logger.warning(f"Concept was empty in row {row:}. Skipped.")
+                counter()
+                continue
             data[concept_column[0]] = entries_to_concepts[concept_entry]
         except KeyError:
             logger.warning(
-                f"Concept {concept_entry} was not found. Please add it to the concepts table manually. The corresponding form was ignored and not added to the dataset."
+                f"Concept {concept_entry} was not found. Please add it to the concepts table manually."
+                # "The corresponding form was ignored and not added to the dataset."
             )
             data[concept_column[0]] = concept_entry
-            continue
+            # continue
         if "id" in implicit:
             data[implicit["id"]] = None
         if "languageReference" in implicit:
             data[implicit["languageReference"]] = sheet.title
         yield data
+
+
+class Counter:
+    def __init__(self, start):
+        self.value = start - 1
+
+    def __call__(self):
+        self.value += 1
+        return self.value
+
+    def decrease(self, by=1):
+        self.value -= by
+
+
+counter = Counter(1)
 
 
 def read_single_excel_sheet(
@@ -75,6 +95,7 @@ def read_single_excel_sheet(
     ignore_missing: bool = False,
     ignore_superfluous: bool = False,
 ):
+    counter()
     concept_columns: t.Tuple[str, str]
     if concept_column is None:
         concept_columns = (
@@ -145,12 +166,6 @@ def read_single_excel_sheet(
         entries_to_concepts=entries_to_concepts,
         concept_column=concept_columns,
     ):
-        # if concept not in datasete, don't add form
-        try:
-            entries_to_concepts[form[c_f_concept]]
-        except KeyError:
-            continue
-        # else, look for candidates, link to existing form or add new form
         for item, value in form.items():
             try:
                 sep = db.dataset["FormTable", item].separator
@@ -158,7 +173,7 @@ def read_single_excel_sheet(
                 continue
             if sep is None:
                 continue
-            form[item] = value.split(sep)
+            form[item] = str(value).split(sep)
         form_candidates = db.find_db_candidates(form, match_form)
         for form_id in form_candidates:
             logger.info(f"Form {form[c_f_value]} was already in data set.")
@@ -182,7 +197,11 @@ def read_single_excel_sheet(
                 concept_reference = (
                     form_concept[0] if isinstance(form_concept, list) else form_concept
                 )
-                form[c_f_id] = string_to_id(f"{form[c_f_language]}_{concept_reference}")
+                form[
+                    c_f_id
+                ] = (
+                    counter()
+                )  # string_to_id(f"{form[c_f_language]}_{concept_reference}")
             db.make_id_unique(form)
             db.insert_into_db(form)
     # write to cldf
@@ -238,7 +257,7 @@ if __name__ == "__main__":
         "--exclude-sheet",
         "-x",
         type=str,
-        nargs="*",
+        action="append",
         default=[],
         help="Sheets not to parse",
     )
