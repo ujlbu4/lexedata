@@ -47,13 +47,7 @@ def clean_cell_value(cell: op.cell.cell.Cell):
         if cell.value == int(cell.value):
             return int(cell.value)
         return cell.value
-    v = unicodedata.normalize("NFC", (cell.value or "").strip())
-    if type(v) == float:
-        if v == int(v):
-            return int(v)
-        return v
-    if type(v) == int:
-        return v
+    v = unicodedata.normalize("NFC", str(cell.value or "").strip())
     try:
         return v.replace("\n", ";\t")
     except TypeError:
