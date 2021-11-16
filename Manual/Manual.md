@@ -94,14 +94,14 @@ Below you can see a typical description of a .csv file in the .json file.
 ![](figures/json.png)
 
 ### 1.2 Navigation using the command line
-On a MacOS computer you can navigate to a specific folder using the command line on your terminal as follows: 
-You can see the directory (folder) you are in at the moment (current directory) within the prompt. In order to go to a directory below (contained in the current directory), type `cd [relative directory path]`, e.g. `cd Documents/arawak/data`. `cd` stands for change directory. Note that directory names are case sensitive and that they can be automatically filled in (if they are unique) by pressing the tab key. 
+When using lexedata it is useful to be able to navigate to specific folders using the command line on your terminal.
+You should be able to see the directory (folder) you are in at the moment (current directory) within the prompt. In order to go to a directory below (contained in the current directory), type `cd [relative directory path]`, e.g. `cd Documents/arawak/data`. `cd` stands for change directory. Note that directory names are case sensitive and that they can be automatically filled in (if they are unique) by pressing the tab key. 
 In order to go to a directory above (the directory containing the current directory), type `cd ..`. Note that you can type any path combining up and down steps. So, if I am in the data directory given as an example above, in order to go to the directory maweti-guarani which is within Documents, I can type `cd ../../maweti-guarani`.
-At any point you can see the contents of your current directory by typing `ls`.
+At any point you can see the contents of your current directory by typing `ls` (on a Mac or Linux) or `dir` (on Windows).
 
 ### 1.3 Working with git
 Git is a version control system. It keeps track of changes so you can easily revert to an earlier version or store a snapshot of your project (e.g. the state of the dataset for a particular article you published). While you could use Lexedata without git, we highly recommend storing your data in a repository (folder) versioned with git.
-In this manual we are going to cover some basic commands to get you started. You can find more detailed instructions and more information on how to begin with git [here](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners) and also in the [tutorials](https://guides.github.com/) by Github. You can also download and use the GitHub Desktop application if you prefer to not use the command line to interact with GitHub. However, you do need to use the command line to interact with Lexedata.
+In this manual we are going to cover some basic commands to get you started. You can find more detailed instructions and more information on how to begin with git [here](https://product.hubspot.com/blog/git-and-github-tutorial-for-beginners) and also in the [tutorials](https://guides.github.com/) by Github. In particular, we recommend to start with [setting up git] (https://docs.github.com/en/get-started/quickstart/set-up-git), [getting started with git](https://docs.github.com/en/get-started/getting-started-with-git/caching-your-github-credentials-in-git), and [using git](https://docs.github.com/en/get-started/using-git). You can also download and use the GitHub Desktop application if you prefer to not use the command line to interact with GitHub. However, you do need to use the command line to interact with Lexedata.
 
 #### 1.3.1 Basic git commands
 Below we are going to describe the use of the most basic git commands. We assume a setup with a local git repository (on your computer) and a remote repository (e.g. on GitHub).
